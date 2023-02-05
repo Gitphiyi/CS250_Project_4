@@ -1,0 +1,33 @@
+{
+  "mode": "spim",
+  "output_filters": ["filter_spim", "filter_remove_colon_prompts"],
+  "test_suites": {
+    "by5or6": {
+      "tests": [
+        { "desc": "n = 1",  "stdin": "tests/by5or6_input_0.txt"},
+        { "desc": "n = 2",  "stdin": "tests/by5or6_input_1.txt"},
+        { "desc": "n = 4",  "stdin": "tests/by5or6_input_2.txt"},
+        { "desc": "n = 7",  "stdin": "tests/by5or6_input_3.txt"},
+        { "desc": "n = 10", "stdin": "tests/by5or6_input_4.txt"}
+      ]
+    },
+    "recurse": {
+      "tests": [
+        { "desc": "n = 0",    "stdin": "tests/recurse_input_0.txt"},
+        { "desc": "n = 2",    "stdin": "tests/recurse_input_1.txt"},
+        { "desc": "n = 4",    "stdin": "tests/recurse_input_2.txt"},
+        { "desc": "n = 7",    "stdin": "tests/recurse_input_3.txt"}
+      ]
+    },
+    "HoopsRank": {
+      "tests": [
+        { "desc": "One team",                     "stdin": "tests/HoopsRank_input_0.txt"},
+        { "desc": "Two teams, in order",          "stdin": "tests/HoopsRank_input_1.txt"},
+        { "desc": "Two teams, out of order",      "stdin": "tests/HoopsRank_input_2.txt"},
+        { "desc": "Six teams",                    "stdin": "tests/HoopsRank_input_3.txt"},
+        { "desc": "Stop reading at DONE",         "stdin": "tests/HoopsRank_input_4.txt"},
+        { "desc": "100 teams",                    "stdin": "tests/HoopsRank_input_5.txt"}
+      ]
+    }
+  }
+}

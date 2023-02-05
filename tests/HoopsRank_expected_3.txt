@@ -1,0 +1,6 @@
+Boston 20
+Duke 20
+Memphis 20
+NewOrleans 19
+Miami 2
+Cleveland -4
