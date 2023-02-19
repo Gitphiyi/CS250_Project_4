@@ -15,28 +15,31 @@ main:
     la $a0, newline
     syscall#new line
 
+    addi $t0, $t0, 1
     li $t1, 0 #counter
+    li $t2, 0 #counter2
     _while_loop:
         beq $t1, $t0, _exit_loop #loops until user input
         li $s0, 5
-        div $t1, $s0
+        div $t2, $s0
         mfhi $s0
-        beq $s0, 0, add_counter #if number is divisible by 5
+        beq $s0, 0, _add_counter #if number is divisible by 5
         li $s0, 6
-        div $t1, $s0
+        div $t2, $s0
         mfhi $s0
-        beq $s0, 0, add_counter #if number is divisible by 6
-        addi $t1, $t1, 1
+        beq $s0, 0, _add_counter #if number is divisible by 6
+        addi $t2, $t2, 1
         j _while_loop
 
-        add_counter: #if the number is divisible by 5 or 6 print it out
-            addi $a0, $t1, 0
+        _add_counter: #if the number is divisible by 5 or 6 print it out
+            addi $a0, $t2, 0
             li $v0, 1
             syscall #print number
             li $v0, 4 
             la $a0, newline
             syscall#print newline
             addi $t1, $t1, 1
+            addi $t2, $t2, 1
             j _while_loop
     
     _exit_loop:
