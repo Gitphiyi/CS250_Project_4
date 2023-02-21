@@ -54,30 +54,87 @@ main:
         li $v0, 5
         syscall
         move $t3, $v0
-        sub $t4, $t1, $t2
-        add $t4, $t4, $t3 #t4 has the metric    
+        sub $t1, $t1, $t2
+        add $t4, $t1, $t3 #t4 has the metric    
 
-        #making the List Nodes
-        li $a0, 72 #must be a multiple of 4. string(63) + int(4) + address(4)
+
+        #making the List Nodes ($t0 = name, $t4 = metric)
+        li $a0, 72 #must be a multiple of 4. string(63) + int(4) + address(4) all in bytes
         li $v0, 9
         syscall #creates node
         move $s3, $v0 #puts address of the node into s3
-        sw $t0, 0($s3)
-        sw $t4, 62($s3)
+        sw $t4, 64($s3) #put metric into node
 
-        beqz $s1, _else #if statement to see if head == NULL
+        move $a0, $s3 #put node address as an argument
+        move $a1, $t0 #put string as an argument
+            addi $sp, $sp, -20
+            sw $t0, 0($sp)
+            sw $t1, 4($sp)
+            sw $t2, 8($sp)
+            sw $t3, 12($sp)
+            sw $t4, 16($sp)
+                jal lw_into_struct #stores the name into node
+            lw $t0, 0($sp)
+            lw $t1, 4($sp)
+            lw $t2, 8($sp)
+            lw $t3, 12($sp)
+            sw $t4, 16($sp)
+            addi $sp, $sp, 20
+
+        bnez $s1, _else #if statement to see if head == NULL
         #if head is first node
-        move $s1, $s3 #moves node into head
-        move $s2, $s1 #sets curr = head
+        move $s1, $s3 #move node into head
+        move $s2, $s1 #set curr = head
+        #sw $0, 68($s2) #set curr->next = null
         j _while_loop
 
         _else:
-        la $t0, 66($s1) #load address of curr->next
-        la $t0, 0($s3) #set curr->next = node
-        la $s1, 0($t0) #set curr= curr->next
+        sw $s3, 68($s2) #set curr->next = node
+        move $s2, $s3 #set curr = curr->next
         j _while_loop
-    
+
     _break:
+    sw $0, 68($s2) #save 0 register to curr->next
+    #sort the linked list
+    #print out the linked list
+    _read_loop:
+        la $a0, 0($s1) #name
+        li $v0, 4
+        syscall
+        lw $a0, 64($s1) #metric
+        li $v0, 1
+        syscall
+        la $a0, newline
+        li $v0, 4
+        syscall
+        
+        lw $s3, 68($s1) #store next pointer
+        beqz $s3, _exit_read
+        move $s1, $s3
+        j _read_loop
+
+
+    lw_into_struct: #a0 = struct memory address, $a1 = string memory address
+        addi $sp, $sp, -4
+        sw $ra, 0($sp)
+        move $t0, $a1 #word
+        move $t1, $a0 #node
+        li $t4, 0
+        li $t3, 64
+        _load_word_loop: #load in the word into memory one byte at a time and increases the register by 4 bytes after loading it in
+            lb $t2, 0($t0) #word
+            beq $t4, $t3, _word_loaded
+            sb $t2, 0($t1)
+            addi $t0, $t0, 1
+            addi $t1, $t1, 1
+            addi $t4, $t4, 4
+            j _load_word_loop
+        _word_loaded:
+        lw $ra, 0($sp)
+        addi $sp, $sp, 4
+        jr $ra
+
+    _exit_read:
     lw $ra, 0($sp)
     addi $sp, $sp, 4
     li $v0, 0
