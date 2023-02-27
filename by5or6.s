@@ -11,13 +11,8 @@ main:
     syscall 
     move $t0, $v0 #get input which is put into t0
 
-    li $v0, 4
-    la $a0, newline
-    syscall#new line
-
-    addi $t0, $t0, 1
     li $t1, 0 #counter
-    li $t2, 0 #counter2
+    li $t2, 1 #counter2
     _while_loop:
         beq $t1, $t0, _exit_loop #loops until user input
         li $s0, 5

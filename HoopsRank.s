@@ -21,22 +21,6 @@ main:
         move $t1, $v0 #check if its eequal or not
         beqz $t1, _break
 
-        # move $t0, $a0 #name stored in $t0
-        # lb $t5, newline
-        # la $t1, escape #puts DONE in $t1
-        # _loop:
-        #     lb $t2, 0($t0)
-        #     lb $t3, 0($t1)
-        #     sub $t4, $t3, $t2
-        #     bne $t4, $0, _end_loop #branch doesn't match up so it is not DONE
-            
-        #     #if characters are equal
-        #     beq $t2, $t5, _break #if it reaches last character
-        #     #increment both addresses by one
-        #     addi $t0, $t0, 1
-        #     addi $t1, $t1, 1
-        #     j _loop
-        # _end_loop:
         #asks for avg points
         la $a0, avg_pts
         li $v0, 4
